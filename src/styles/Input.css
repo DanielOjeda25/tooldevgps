@@ -12,7 +12,8 @@
 textarea {
   width: 100%;
   /* Opcional: usar el ancho completo del contenedor */
-  min-height: 150px;
+  min-height: 50px;
+  max-height: 350px;
   /* Ajusta la altura mínima según tus preferencias */
   padding: 10px;
   font-size: 16px;
