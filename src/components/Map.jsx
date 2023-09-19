@@ -18,9 +18,12 @@ const Map = ({ jsonValue }) => {
       data.forEach((point) => {
         const { lat, lon, color } = point;
 
+        // Verifica si el atributo 'color' existe en el objeto, si no, usa un color predeterminado
+        const markerColor = color ? color : '#FF0000';
+
         const marker = L.circleMarker([lat, lon], {
           radius: 8,
-          fillColor: color,
+          fillColor: markerColor,
           fillOpacity: 0.8,
         }).addTo(map);
 
@@ -28,13 +31,13 @@ const Map = ({ jsonValue }) => {
       });
     };
 
+
     if (!mapInitialized) {
       setMapInitialized(true);
 
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          console.log(latitude, longitude);
           localStorage.setItem('userLocation', JSON.stringify({ lat: latitude, lon: longitude }));
 
           // Utiliza flyTo para centrar el mapa en la ubicación actual con animación
@@ -47,11 +50,10 @@ const Map = ({ jsonValue }) => {
 
           const userLocation = JSON.parse(localStorage.getItem('userLocation'));
           if (userLocation) {
-            // Utiliza flyTo para centrar el mapa en la ubicación guardada en el localStorage con animación
             map.flyTo([userLocation.lat, userLocation.lon], 15);
           } else {
             // Utiliza flyTo para centrar el mapa en una ubicación predeterminada con animación
-            map.flyTo([userLocation.lat, userLocation.lon], 15);
+            map.flyTo(position, 15);
           }
         }
       );
@@ -88,36 +90,35 @@ export default Map;
 
 
 /* 
-
 [
-    {
-        "lat": "-27.37155285019303",
-        "lon": "-55.947683173883156",
-        "course": 180,
-        "speed": "200",
-        "color": "#817f82"
-    },
-    {
-        "lat": "-27.372540195774146",
-        "lon": "-55.940137962857456",
-        "course": 180,
-        "speed": "200",
-        "color": "#FF0800"
-    },
-    {
-        "lat": "-27.369485567006652",
-        "lon": "-55.93955308024916",
-        "course": 180,
-        "speed": "200",
-        "color": "#FF7538"
-    },
-     {
-        "lat": "-27.373838674416277",
-        "lon": "-55.93266281022636",
-        "course": 180,
-        "speed": "200",
-        "color": "#FF7538"
-    }
+   {
+      "lat":"-27.37155285019303",
+      "lon":"-55.947683173883156",
+      "course":180,
+      "speed":"200",
+      "color":"#817f82"
+   },
+   {
+      "lat":"-27.372540195774146",
+      "lon":"-55.940137962857456",
+      "course":180,
+      "speed":"200",
+      "color":"#FF0800"
+   },
+   {
+      "lat":"-27.369485567006652",
+      "lon":"-55.93955308024916",
+      "course":180,
+      "speed":"200",
+      "color":"#FF7538"
+   },
+   {
+      "lat":"-27.373838674416277",
+      "lon":"-55.93266281022636",
+      "course":180,
+      "speed":"200",
+      "color":"#FF7538"
+   }
 ]
 
 */
